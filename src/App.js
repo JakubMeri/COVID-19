@@ -1,26 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import axios from 'axios';
+import Data from './Data.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+
+ 
+      state = {
+      data: [],
+      actualCountry: "Slovakia"
+    }
+
+getData(){
+  axios.get("https://api.covid19api.com/summary")
+  .then(res =>  this.setState({data: res.data.Countries}))
+  .catch( err => console.log(err))
 }
 
-export default App;
+componentDidMount = () =>{
+  this.getData();
+}
+getCurrentCountry = (e) => {
+  const krajina = e.target.value;
+  this.setState({actualCountry: krajina})
+}
+
+
+
+  render(){
+    const {data} = this.state;
+    const dataList = data.length === "" ? null : data.map(  option =>  <option key={option.Country} value={option.Country}>{option.Country}</option>); 
+    
+    return(
+      <div className="App">
+      <div className="overlay"></div>
+      <h1 className="nadpis">COVID -19 TRACKER</h1>
+      <select id="selection" value={this.state.actualCountry} onChange={this.getCurrentCountry}>
+      {dataList}
+      </select>
+        <Data aktualnaKrajina ={this.state.actualCountry}
+        info = {this.state.data}/>
+      </div>
+    )
+  }
+}
+
+
