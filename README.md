@@ -1,5 +1,3 @@
-<<<<<<< HEAD
+
 ### COVID-19 TRACKER
-=======
-### COVID-19 TRACKER
->>>>>>> 0892e3d7e43d9358a9229499718e5bec805107e7
+
